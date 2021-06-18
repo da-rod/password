@@ -8,12 +8,13 @@ import (
 )
 
 const (
-	n  = 25   // number of passwords
-	l  = 25   // passwords' length
-	d  = true // include digits
-	s  = true // include symbols
-	lw = true // include lower case characters
-	up = true // include upper case characters
+	n  = 25    // number of passwords
+	l  = 25    // passwords' length
+	d  = true  // include digits
+	s  = true  // include symbols
+	lw = true  // include lower case characters
+	up = true  // include upper case characters
+	i  = false // prepend passwords with their id
 )
 
 func main() {
@@ -24,6 +25,7 @@ func main() {
 		symbols = flag.Bool("s", s, "Include symbols")
 		lower   = flag.Bool("low", lw, "Include lower case characters")
 		upper   = flag.Bool("up", up, "Include upper case characters")
+		id      = flag.Bool("i", i, "Include password id in list")
 	)
 	flag.Parse()
 
@@ -37,7 +39,11 @@ func main() {
 	}
 
 	list := password.Generate(config)
-	for _, pwd := range list {
-		fmt.Println(pwd)
+	for k, pwd := range list {
+		if *id {
+			fmt.Printf("%d\t%s\n", k+1, pwd)
+		} else {
+			fmt.Println(pwd)
+		}
 	}
 }
